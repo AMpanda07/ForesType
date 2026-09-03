@@ -80,131 +80,76 @@ export const WordTrail = ({
   const lastTyped = engine.typedChars[engine.typedChars.length - 1];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-      {/* Game Config Controls */}
-      <div className="forest-card" style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1rem',
-        padding: '0.85rem 1.25rem'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Settings2 size={18} style={{ color: 'var(--color-accent-primary)' }} />
-          <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Word Trail Config:</span>
-        </div>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
-          {/* Duration Selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Duration:</span>
-            {[15, 30, 60, 120].map((t) => (
-              <button
-                key={t}
-                onClick={(e) => {
-                  setDuration(t);
-                  engine.restart();
-                  e.currentTarget.blur();
-                }}
-                disabled={engine.isStarted}
-                style={{
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1px solid ' + (duration === t ? 'var(--color-accent-primary)' : 'var(--border-subtle)'),
-                  backgroundColor: duration === t ? 'var(--bg-secondary)' : 'transparent',
-                  color: duration === t ? 'var(--color-accent-luminous)' : 'var(--text-secondary)',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                {t}s
-              </button>
-            ))}
-          </div>
-
-          {/* Difficulty Selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Difficulty:</span>
-            {['beginner', 'intermediate', 'advanced', 'expert'].map((d) => (
-              <button
-                key={d}
-                onClick={(e) => {
-                  setDifficulty(d);
-                  engine.restart();
-                  e.currentTarget.blur();
-                }}
-                disabled={engine.isStarted}
-                style={{
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1px solid ' + (difficulty === d ? 'var(--color-accent-primary)' : 'var(--border-subtle)'),
-                  backgroundColor: difficulty === d ? 'var(--bg-secondary)' : 'transparent',
-                  color: difficulty === d ? 'var(--color-accent-luminous)' : 'var(--text-secondary)',
-                  fontSize: '0.8rem',
-                  fontWeight: 500,
-                  textTransform: 'capitalize',
-                  cursor: 'pointer'
-                }}
-              >
-                {d}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={(e) => {
-              setShowKeyboard((prev) => !prev);
-              e.currentTarget.blur();
-            }}
-            className="btn-forest btn-forest-outline"
-            style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem' }}
-          >
-            <Keyboard size={14} /> Keyboard
-          </button>
-
-          <button
-            onClick={(e) => {
-              engine.restart();
-              e.currentTarget.blur();
-            }}
-            className="btn-forest"
-            style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem' }}
-          >
-            <RotateCcw size={14} /> Restart
-          </button>
-        </div>
+    <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', padding: '2rem 0', position: 'relative', zIndex: 10 }}>
+      
+      {/* Top Label */}
+      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+        TIME MODE • {duration} SECONDS
       </div>
 
       {/* Live Stats Header */}
-      <StatsHeader
-        wpm={engine.wpm}
-        accuracy={engine.accuracy}
-        cpm={engine.cpm}
-        time={engine.remainingTime}
-        timeMode="remaining"
-        consistency={engine.consistency}
-        streak={engine.streak}
-      />
-
-      {/* Main Typing Display */}
-      <TypingDisplay
-        targetText={targetText}
-        currentIndex={engine.currentIndex}
-        typedChars={engine.typedChars}
-        isStarted={engine.isStarted}
-        isPaused={engine.isPaused}
-        isCompleted={engine.isCompleted}
-      />
-
-      {/* Interactive Virtual Keyboard */}
-      {showKeyboard && (
-        <VirtualKeyboard
-          targetChar={targetText[engine.currentIndex] || ''}
-          lastTyped={lastTyped}
+      <div style={{ width: '100%', maxWidth: '900px' }}>
+        <StatsHeader
+          wpm={engine.wpm}
+          accuracy={engine.accuracy}
+          cpm={engine.cpm}
+          time={engine.remainingTime}
+          timeMode="remaining"
         />
-      )}
+      </div>
+
+      {/* Main Typing Display inside Glass Panel */}
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '900px', padding: '3rem', minHeight: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <TypingDisplay
+          targetText={targetText}
+          currentIndex={engine.currentIndex}
+          typedChars={engine.typedChars}
+          isStarted={engine.isStarted}
+          isPaused={engine.isPaused}
+          isCompleted={engine.isCompleted}
+        />
+      </div>
+
+      {/* Time Pills */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '-0.5rem' }}>
+        {[15, 30, 60, 120, 'Custom'].map((t) => (
+          <button
+            key={t}
+            onClick={(e) => {
+              if (t !== 'Custom') {
+                setDuration(t);
+                engine.restart();
+              }
+              e.currentTarget.blur();
+            }}
+            disabled={engine.isStarted && t !== 'Custom'}
+            className={`time-pill ${duration === t ? 'active' : ''}`}
+          >
+            {t}{t !== 'Custom' ? 's' : ''}
+          </button>
+        ))}
+      </div>
+
+      {/* Bottom Controls */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '900px', marginTop: '1rem' }}>
+        <button
+          className="glass-panel"
+          style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', background: 'var(--glass-bg)' }}
+        >
+          <span style={{ fontSize: '1.2rem' }}>🔊</span> Sound
+        </button>
+        
+        <button
+          onClick={(e) => {
+            engine.restart();
+            e.currentTarget.blur();
+          }}
+          className="glass-panel"
+          style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', background: 'var(--glass-bg)' }}
+        >
+          <RotateCcw size={18} /> Restart
+        </button>
+      </div>
 
       {/* Result Modal Screen */}
       {engine.isCompleted && (

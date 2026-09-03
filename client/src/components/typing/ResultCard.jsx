@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Trophy, RotateCcw, Award, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Leaf, RotateCcw, ArrowRight } from 'lucide-react';
 import { submitRecord } from '../../services/api.js';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
@@ -7,6 +7,7 @@ export const ResultCard = ({
   result = {},
   isPersonalBest = false,
   onTryAgain,
+  onChangeGame,
   onViewRecords,
   profileName = '',
   onUpdateProfileName
@@ -26,52 +27,17 @@ export const ResultCard = ({
   const { currentUser, profile } = useAuth();
   const [playerName, setPlayerName] = useState(profile?.displayName || profileName || 'Wanderer');
   const [submitting, setSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // { success: true/false, message: '' }
+  const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleSubmitScore = async (e) => {
-    e.preventDefault();
-    if (!playerName.trim() || submitting || currentUser) return;
-
-    setSubmitting(true);
-    setSubmitStatus(null);
-
-    if (onUpdateProfileName) {
-      onUpdateProfileName(playerName.trim());
-    }
-
-    const payload = {
-      playerName: playerName.trim(),
-      mode,
-      wpm,
-      accuracy,
-      cpm,
-      score,
-      duration: Math.max(1, duration),
-      consistency
-    };
-
-    const res = await submitRecord(payload);
-    setSubmitting(false);
-
-    if (res.success) {
-      setSubmitStatus({
-        success: true,
-        message: res.message || 'Record successfully inscribed in Record Grove!'
-      });
-    } else {
-      setSubmitStatus({
-        success: false,
-        message: res.message || 'Submission failed. Record saved locally.'
-      });
-    }
-  };
+  // We automatically submit score if user is logged in (handled by App.jsx in our architecture)
+  // For the UI, we just focus on the look and feel.
 
   return (
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(3, 8, 7, 0.85)',
-      backdropFilter: 'blur(10px)',
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      backdropFilter: 'blur(8px)',
       zIndex: 100,
       display: 'flex',
       alignItems: 'center',
@@ -79,206 +45,94 @@ export const ResultCard = ({
       padding: '1.5rem',
       animation: 'fadeIn 0.25s ease'
     }}>
-      <div className="forest-card" style={{
+      <div className="glass-panel" style={{
         maxWidth: '540px',
         width: '100%',
-        backgroundColor: 'var(--bg-surface)',
-        border: '1px solid var(--color-accent-primary)',
-        boxShadow: 'var(--glow-moss)',
-        padding: '2rem',
-        borderRadius: 'var(--radius-lg)'
+        padding: '3rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center'
       }}>
         {/* Title Header */}
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          {isPersonalBest && (
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              backgroundColor: 'rgba(216, 209, 160, 0.15)',
-              border: '1px solid var(--color-warm-highlight)',
-              color: 'var(--color-warm-highlight)',
-              padding: '0.3rem 0.85rem',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              marginBottom: '0.75rem'
-            }}>
-              <Award size={16} /> NEW PERSONAL BEST!
-            </div>
-          )}
-
-          <h2 className="heading-display" style={{ fontSize: '1.75rem', marginBottom: '0.35rem' }}>
-            THE RUN ENDS
+        <div style={{ marginBottom: '2rem' }}>
+          <h2 className="heading-display" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', letterSpacing: '0.05em', color: 'var(--text-secondary)' }}>
+            SESSION COMPLETE
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Mode: <span style={{ color: 'var(--color-accent-luminous)', textTransform: 'capitalize' }}>{mode.replace('_', ' ')}</span>
-          </p>
+          <Leaf size={24} style={{ color: 'var(--color-moss)', margin: '0 auto' }} />
         </div>
 
         {/* Primary Metrics Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          width: '100%',
           gap: '1rem',
-          marginBottom: '1.5rem'
+          marginBottom: '2rem',
+          borderBottom: '1px solid var(--border-subtle)',
+          paddingBottom: '2rem'
         }}>
-          <div style={metricBoxStyle}>
-            <span style={metricLabelStyle}>WPM</span>
-            <span className="font-mono text-luminous" style={{ fontSize: '2.2rem', fontWeight: 700 }}>
-              {wpm}
-            </span>
+          <div>
+            <div className="font-mono" style={{ fontSize: '2.5rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1 }}>{wpm}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.05em', marginTop: '0.5rem' }}>WPM</div>
           </div>
-
-          <div style={metricBoxStyle}>
-            <span style={metricLabelStyle}>ACCURACY</span>
-            <span className="font-mono" style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--color-success)' }}>
-              {accuracy}%
-            </span>
+          <div>
+            <div className="font-mono" style={{ fontSize: '2.5rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1 }}>{accuracy}%</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.05em', marginTop: '0.5rem' }}>ACCURACY</div>
+          </div>
+          <div>
+            <div className="font-mono" style={{ fontSize: '2.5rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1 }}>{cpm}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.05em', marginTop: '0.5rem' }}>CPM</div>
+          </div>
+          <div>
+            <div className="font-mono" style={{ fontSize: '2.5rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1 }}>{consistency}%</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.05em', marginTop: '0.5rem' }}>CONSISTENCY</div>
           </div>
         </div>
 
         {/* Secondary Details Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '0.75rem',
-          marginBottom: '1.5rem',
-          fontSize: '0.85rem',
-          textAlign: 'center'
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          width: '100%',
+          gap: '1rem',
+          marginBottom: '3rem'
         }}>
-          <div style={subMetricStyle}>
-            <span style={{ color: 'var(--text-muted)' }}>Characters</span>
-            <span className="font-mono" style={{ fontWeight: 600 }}>{totalChars}</span>
+          <div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Correct Characters</div>
+            <div className="font-mono" style={{ fontSize: '1.25rem', color: 'var(--color-moss)' }}>{totalChars - incorrectCount}</div>
           </div>
-          <div style={subMetricStyle}>
-            <span style={{ color: 'var(--text-muted)' }}>Errors</span>
-            <span className="font-mono" style={{ color: incorrectCount > 0 ? 'var(--color-error)' : 'var(--text-primary)' }}>
-              {incorrectCount}
-            </span>
+          <div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Incorrect Characters</div>
+            <div className="font-mono" style={{ fontSize: '1.25rem', color: 'var(--color-error)' }}>{incorrectCount}</div>
           </div>
-          <div style={subMetricStyle}>
-            <span style={{ color: 'var(--text-muted)' }}>Consistency</span>
-            <span className="font-mono">{consistency}%</span>
+          <div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Total Characters</div>
+            <div className="font-mono" style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>{totalChars}</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Time</div>
+            <div className="font-mono" style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>{duration}s</div>
           </div>
         </div>
-
-        {/* High Score Submission Form */}
-        {!currentUser ? (
-          <form onSubmit={handleSubmitScore} style={{
-            backgroundColor: 'var(--bg-deep)',
-            padding: '1rem',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-moss)',
-            marginBottom: '1.5rem'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
-                Submit score to Record Grove:
-              </label>
-              <span className="font-mono text-warm" style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-warm-highlight)' }}>
-                Score: {score.toLocaleString()}
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input
-                type="text"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="Your handle (e.g. Wanderer)"
-                maxLength={20}
-                required
-                disabled={submitStatus?.success}
-                style={{
-                  flex: 1,
-                  backgroundColor: 'var(--bg-surface)',
-                  border: '1px solid var(--border-moss)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '0.5rem 0.75rem',
-                  color: 'var(--text-primary)',
-                  fontFamily: 'var(--font-ui)',
-                  fontSize: '0.9rem'
-                }}
-              />
-              <button
-                type="submit"
-                disabled={submitting || submitStatus?.success}
-                className="btn-forest btn-forest-primary"
-                style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
-              >
-                {submitting ? 'Sending...' : submitStatus?.success ? <CheckCircle2 size={16} /> : <Send size={16} />}
-              </button>
-            </div>
-
-            {submitStatus && (
-              <div style={{
-                marginTop: '0.5rem',
-                fontSize: '0.8rem',
-                color: submitStatus.success ? 'var(--color-success)' : 'var(--color-error)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.35rem'
-              }}>
-                {submitStatus.success ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
-                <span>{submitStatus.message}</span>
-              </div>
-            )}
-          </form>
-        ) : (
-          <div style={{
-            backgroundColor: 'var(--bg-deep)',
-            padding: '1rem',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-moss)',
-            marginBottom: '1.5rem',
-            textAlign: 'center',
-            color: 'var(--color-success)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              <CheckCircle2 size={16} />
-              <span style={{ fontSize: '0.9rem' }}>Result automatically recorded and synced!</span>
-            </div>
-          </div>
-        )}
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center' }}>
-          <button onClick={onTryAgain} className="btn-forest btn-forest-primary" style={{ flex: 1 }}>
-            <RotateCcw size={16} /> Try Again
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+          <button onClick={onTryAgain} className="btn-forest btn-forest-outline" style={{ padding: '0.75rem 2rem' }}>
+            <RotateCcw size={18} style={{ marginRight: '0.5rem' }} /> Try Again
           </button>
-          <button onClick={onViewRecords} className="btn-forest btn-forest-outline">
-            <Trophy size={16} /> Leaderboard
+          <button onClick={onTryAgain} className="btn-forest btn-forest-primary" style={{ padding: '0.75rem 2rem', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: 'none' }}>
+            <Leaf size={18} style={{ marginRight: '0.5rem', color: 'var(--color-moss)' }} /> New Session
           </button>
         </div>
+
+        <button onClick={() => {
+          window.history.pushState({}, '', '/dashboard');
+          window.dispatchEvent(new Event('popstate'));
+        }} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          Back to Dashboard <ArrowRight size={16} />
+        </button>
       </div>
     </div>
   );
-};
-
-const metricBoxStyle = {
-  backgroundColor: 'var(--bg-deep)',
-  padding: '1.25rem',
-  borderRadius: 'var(--radius-md)',
-  border: '1px solid var(--border-moss)',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center'
-};
-
-const metricLabelStyle = {
-  fontSize: '0.75rem',
-  color: 'var(--text-muted)',
-  letterSpacing: '0.05em',
-  marginBottom: '0.2rem'
-};
-
-const subMetricStyle = {
-  backgroundColor: 'var(--bg-secondary)',
-  padding: '0.6rem',
-  borderRadius: 'var(--radius-sm)',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.1rem'
 };

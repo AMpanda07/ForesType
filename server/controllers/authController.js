@@ -10,8 +10,8 @@ export const syncUser = async (req, res, next) => {
       // Create new user if they don't exist
       user = new User({
         firebaseUid: uid,
-        email: email,
-        displayName: name || email.split('@')[0],
+        email: email || `${uid}@guest.forestype.com`,
+        displayName: name || (email ? email.split('@')[0] : 'Wanderer'),
         googlePhotoURL: picture || '',
         selectedAvatar: 'default',
         level: 1,

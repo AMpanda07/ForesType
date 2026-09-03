@@ -1,82 +1,92 @@
 /* FOREST TYPE DESIGN SYSTEM & ATMOSPHERIC STYLES */
 :root, :root[data-theme="light"] {
-  /* Light Mode Tokens (Phase 2) */
-  --bg-primary: #f0f5ef;
-  --bg-deep: #e8eee6;
+  /* Light Mode Tokens */
+  --bg-primary: #ffffff;
+  --bg-deep: #f8fbf9;
   --bg-surface: #ffffff;
-  --bg-surface-hover: #f5f8f5;
-  --bg-secondary: #e2ebd8;
-  --bg-secondary-hover: #d5e0ca;
+  --bg-surface-hover: #f1f6f3;
+  --bg-secondary: #f4f8f5;
+  --bg-secondary-hover: #e8f0eb;
   
-  --color-moss: #16a34a;
-  --color-moss-light: #22c55e;
-  --color-accent-primary: #15803d;
-  --color-accent-luminous: #16a34a;
-  --color-warm-highlight: #65a30d;
+  --color-moss: #4caf50;
+  --color-moss-light: #81c784;
+  --color-accent-primary: #388e3c;
+  --color-accent-luminous: #4caf50;
+  --color-warm-highlight: #689f38;
   
-  --text-primary: #1a2e22;
-  --text-secondary: #5c6b62;
-  --text-muted: #85968b;
+  --text-primary: #1e2924;
+  --text-secondary: #5a6b63;
+  --text-muted: #8ca396;
   
-  --color-error: #dc2626;
-  --color-error-bg: rgba(220, 38, 38, 0.1);
-  --color-success: #16a34a;
-  --color-success-bg: rgba(22, 163, 74, 0.1);
+  --color-error: #e53935;
+  --color-error-bg: rgba(229, 57, 53, 0.08);
+  --color-success: #4caf50;
+  --color-success-bg: rgba(76, 175, 80, 0.08);
   
-  --border-subtle: rgba(26, 46, 34, 0.1);
-  --border-moss: rgba(22, 163, 74, 0.2);
-  --border-luminous: rgba(21, 128, 61, 0.3);
+  --border-subtle: #eef2ef;
+  --border-moss: #e0e8e3;
+  --border-luminous: rgba(76, 175, 80, 0.3);
 
-  /* Glow Effects (Restrained) */
-  --glow-soft: 0 4px 15px rgba(22, 163, 74, 0.08);
-  --glow-moss: 0 4px 20px rgba(22, 163, 74, 0.15);
-  --glow-warm: 0 4px 15px rgba(101, 163, 13, 0.2);
-  --glow-error: 0 4px 12px rgba(220, 38, 38, 0.2);
+  /* Glow Effects */
+  --glow-soft: 0 4px 15px rgba(0, 0, 0, 0.03);
+  --glow-moss: 0 4px 20px rgba(76, 175, 80, 0.15);
+  --glow-warm: 0 4px 15px rgba(104, 159, 56, 0.2);
+  --glow-error: 0 4px 12px rgba(229, 57, 53, 0.2);
+  
+  /* Glassmorphism for Light Mode */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
 }
 
 :root[data-theme="dark"] {
-  /* Dark Mode Tokens (Phase 2) */
-  --bg-primary: #0d1a14;
-  --bg-deep: #08120e;
-  --bg-surface: #111f18;
-  --bg-surface-hover: #16281e;
-  --bg-secondary: #1a2e22;
-  --bg-secondary-hover: #223c2d;
+  /* Dark Mode Tokens */
+  --bg-primary: #0a0f0d;
+  --bg-deep: #050806;
+  --bg-surface: #101713;
+  --bg-surface-hover: #151e19;
+  --bg-secondary: #16201a;
+  --bg-secondary-hover: #1b261f;
   
-  --color-moss: #22c55e;
-  --color-moss-light: #4ade80;
-  --color-accent-primary: #4ade80;
-  --color-accent-luminous: #22c55e;
-  --color-warm-highlight: #a3e635;
+  --color-moss: #66bb6a;
+  --color-moss-light: #81c784;
+  --color-accent-primary: #81c784;
+  --color-accent-luminous: #66bb6a;
+  --color-warm-highlight: #9ccc65;
   
-  --text-primary: #e8f0ea;
-  --text-secondary: #8a9a90;
-  --text-muted: #64746a;
+  --text-primary: #e6eee9;
+  --text-secondary: #8c9e94;
+  --text-muted: #5e6d65;
   
-  --color-error: #ef4444;
-  --color-error-bg: rgba(239, 68, 68, 0.15);
-  --color-success: #22c55e;
-  --color-success-bg: rgba(34, 197, 94, 0.15);
+  --color-error: #ef5350;
+  --color-error-bg: rgba(239, 83, 80, 0.12);
+  --color-success: #66bb6a;
+  --color-success-bg: rgba(102, 187, 106, 0.12);
   
-  --border-subtle: rgba(232, 240, 234, 0.1);
-  --border-moss: rgba(34, 197, 94, 0.2);
-  --border-luminous: rgba(74, 222, 128, 0.3);
+  --border-subtle: #1c2721;
+  --border-moss: #23332a;
+  --border-luminous: rgba(102, 187, 106, 0.2);
 
-  --glow-soft: 0 0 15px rgba(34, 197, 94, 0.15);
-  --glow-moss: 0 0 20px rgba(74, 222, 128, 0.2);
-  --glow-warm: 0 0 15px rgba(163, 230, 53, 0.2);
-  --glow-error: 0 0 12px rgba(239, 68, 68, 0.3);
+  --glow-soft: 0 0 15px rgba(0, 0, 0, 0.3);
+  --glow-moss: 0 0 20px rgba(102, 187, 106, 0.15);
+  --glow-warm: 0 0 15px rgba(156, 204, 101, 0.2);
+  --glow-error: 0 0 12px rgba(239, 83, 80, 0.3);
+  
+  /* Glassmorphism for Dark Mode */
+  --glass-bg: rgba(16, 23, 19, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 :root {
   /* Fonts */
   --font-ui: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-heading: 'Cinzel', serif, system-ui;
+  --font-heading: 'Lora', serif, system-ui; /* Closer to reference image */
 
   /* Spacing & Radii */
-  --radius-sm: 6px;
-  --radius-md: 10px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-lg: 16px;
   --radius-full: 9999px;
   
@@ -122,15 +132,15 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-moss);
+  background: var(--border-moss);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-primary);
+  background: var(--color-moss);
 }
 
-/* Focus States (Accessible & Themed) */
+/* Focus States */
 *:focus-visible {
   outline: 2px solid var(--color-accent-luminous);
   outline-offset: 3px;
@@ -148,25 +158,31 @@ html, body {
 /* Card Surface Styling */
 .forest-card {
   background-color: var(--bg-surface);
-  border: 1px solid var(--border-moss);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--glow-soft);
 }
 
-.forest-card:hover {
-  border-color: var(--border-luminous);
-  box-shadow: var(--glow-soft);
+/* Glass Panel Styling */
+.glass-panel {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 /* Typography Utilities */
 .heading-display {
   font-family: var(--font-heading);
-  letter-spacing: 0.05em;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
-  text-transform: uppercase;
 }
 
 .font-mono {
@@ -174,7 +190,7 @@ html, body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--color-accent-luminous) 50%, var(--color-warm-highlight) 100%);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--color-accent-luminous) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -191,33 +207,7 @@ html, body {
   color: var(--text-muted);
 }
 
-/* Keyframe Animations */
-@keyframes floatParticle {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: translateY(-40px) translateX(15px) scale(1.1);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateY(-80px) translateX(-10px) scale(0.9);
-    opacity: 0;
-  }
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.4;
-    filter: drop-shadow(0 0 5px var(--color-accent-primary));
-  }
-  50% {
-    opacity: 0.9;
-    filter: drop-shadow(0 0 15px var(--color-accent-luminous));
-  }
-}
-
+/* Animations */
 @keyframes cursorBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
@@ -259,33 +249,54 @@ html, body {
 
 .btn-forest:hover {
   background-color: var(--bg-secondary-hover);
-  border-color: var(--color-accent-primary);
-  color: var(--color-accent-luminous);
-  box-shadow: var(--glow-soft);
-  transform: translateY(-1px);
+  border-color: var(--border-luminous);
+  color: var(--text-primary);
 }
 
 .btn-forest-primary {
   background-color: var(--color-moss);
-  border-color: var(--color-accent-primary);
-  color: var(--text-primary);
+  border-color: var(--color-moss);
+  color: #ffffff;
 }
 
 .btn-forest-primary:hover {
   background-color: var(--color-moss-light);
-  border-color: var(--color-accent-luminous);
-  color: #fff;
-  box-shadow: var(--glow-moss);
+  border-color: var(--color-moss-light);
+  color: #ffffff;
 }
 
 .btn-forest-outline {
   background-color: transparent;
-  border-color: var(--border-subtle);
+  border-color: var(--border-moss);
   color: var(--text-secondary);
 }
 
 .btn-forest-outline:hover {
-  border-color: var(--color-accent-primary);
+  border-color: var(--color-moss);
+  color: var(--text-primary);
+}
+
+/* Time Pills (Specific to reference UI) */
+.time-pill {
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-moss);
+}
+
+.time-pill.active {
+  background-color: var(--color-moss);
+  color: #ffffff;
+  border-color: var(--color-moss);
+}
+
+.time-pill:hover:not(.active) {
+  background-color: var(--bg-surface-hover);
   color: var(--text-primary);
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Trees, Sun, Moon, Monitor } from 'lucide-react';
+import { Menu, X, Leaf, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 
 export const Navbar = ({ activeTab, setActiveTab }) => {
@@ -33,8 +33,9 @@ export const Navbar = ({ activeTab, setActiveTab }) => {
       position: 'sticky',
       top: 0,
       zIndex: 50,
-      backgroundColor: 'var(--bg-primary)',
-      borderBottom: '1px solid var(--border-moss)'
+      backgroundColor: 'var(--glass-bg)',
+      backdropFilter: 'blur(10px)',
+      borderBottom: '1px solid var(--border-subtle)'
     }}>
       <div className="container" style={{
         display: 'flex',
@@ -44,7 +45,7 @@ export const Navbar = ({ activeTab, setActiveTab }) => {
       }}>
         {/* Brand Logo */}
         <button
-          onClick={() => handleNavClick('home')}
+          onClick={() => handleNavClick('dashboard')}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -55,29 +56,20 @@ export const Navbar = ({ activeTab, setActiveTab }) => {
             padding: 0
           }}
         >
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: 'var(--radius-md)',
-            color: 'var(--color-moss-light)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Trees size={24} />
-          </div>
+          <Leaf size={24} style={{ color: 'var(--color-moss)' }} />
           <span className="heading-display" style={{
-            fontSize: '1.2rem',
+            fontSize: '1.25rem',
             fontWeight: 600,
             color: 'var(--text-primary)',
-            textTransform: 'none'
+            textTransform: 'none',
+            letterSpacing: '0px'
           }}>
             ForesType
           </span>
         </button>
 
         {/* Center Nav */}
-        <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+        <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '2rem', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
@@ -88,10 +80,10 @@ export const Navbar = ({ activeTab, setActiveTab }) => {
                   background: 'none',
                   border: 'none',
                   color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  fontWeight: isActive ? 600 : 500,
-                  fontSize: '0.95rem',
+                  fontWeight: isActive ? 600 : 400,
+                  fontSize: '0.9rem',
                   cursor: 'pointer',
-                  padding: '0.5rem 0.25rem',
+                  padding: '1.5rem 0.25rem',
                   position: 'relative',
                   transition: 'color var(--transition-fast)'
                 }}
@@ -100,11 +92,11 @@ export const Navbar = ({ activeTab, setActiveTab }) => {
                 {isActive && (
                   <div style={{
                     position: 'absolute',
-                    bottom: '-4px',
+                    bottom: '16px',
                     left: 0,
                     right: 0,
                     height: '2px',
-                    backgroundColor: 'var(--color-accent-luminous)',
+                    backgroundColor: 'var(--color-moss)',
                     borderRadius: '2px'
                   }} />
                 )}

@@ -1,92 +1,64 @@
 import React from 'react';
-import { Gauge, Target, Clock, Zap, Flame, ShieldAlert } from 'lucide-react';
+import { Target, Clock, Activity, BarChart2 } from 'lucide-react';
 
 export const StatsHeader = ({
   wpm = 0,
   accuracy = 100,
   cpm = 0,
   time = 0,
-  timeMode = 'remaining', // 'remaining' | 'elapsed'
-  consistency = 100,
-  streak = 0,
-  errors = 0,
-  maxErrors = null
+  timeMode = 'remaining'
 }) => {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-      gap: '0.85rem',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gap: '1.25rem',
       width: '100%',
-      marginBottom: '1.25rem'
+      marginBottom: '2rem'
     }}>
       {/* WPM */}
-      <div className="forest-card" style={{ padding: '0.85rem', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.2rem' }}>
-          <Gauge size={14} style={{ color: 'var(--color-accent-primary)' }} />
-          <span>WPM</span>
-        </div>
-        <div className="font-mono text-luminous" style={{ fontSize: '1.8rem', fontWeight: 700, lineHeight: 1.1 }}>
-          {wpm}
+      <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>WPM</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="font-mono text-primary" style={{ fontSize: '2.5rem', fontWeight: 600, lineHeight: 1 }}>
+            {wpm}
+          </div>
+          <BarChart2 size={24} style={{ color: 'var(--color-moss)' }} />
         </div>
       </div>
 
       {/* ACCURACY */}
-      <div className="forest-card" style={{ padding: '0.85rem', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.2rem' }}>
-          <Target size={14} style={{ color: 'var(--color-accent-luminous)' }} />
-          <span>ACCURACY</span>
-        </div>
-        <div className="font-mono" style={{ fontSize: '1.8rem', fontWeight: 700, lineHeight: 1.1, color: accuracy >= 95 ? 'var(--color-success)' : accuracy >= 85 ? 'var(--text-primary)' : 'var(--color-error)' }}>
-          {accuracy}%
-        </div>
-      </div>
-
-      {/* TIME */}
-      <div className="forest-card" style={{ padding: '0.85rem', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.2rem' }}>
-          <Clock size={14} style={{ color: 'var(--color-warm-highlight)' }} />
-          <span>{timeMode === 'remaining' ? 'TIME' : 'ELAPSED'}</span>
-        </div>
-        <div className="font-mono" style={{ fontSize: '1.8rem', fontWeight: 700, lineHeight: 1.1, color: 'var(--color-warm-highlight)' }}>
-          {time}s
+      <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>ACCURACY</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="font-mono text-primary" style={{ fontSize: '2.5rem', fontWeight: 600, lineHeight: 1 }}>
+            {accuracy}%
+          </div>
+          <Target size={24} style={{ color: 'var(--color-moss)' }} />
         </div>
       </div>
 
       {/* CPM */}
-      <div className="forest-card" style={{ padding: '0.85rem', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.2rem' }}>
-          <Zap size={14} style={{ color: 'var(--color-accent-primary)' }} />
-          <span>CPM</span>
-        </div>
-        <div className="font-mono text-moss" style={{ fontSize: '1.8rem', fontWeight: 700, lineHeight: 1.1 }}>
-          {cpm}
+      <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>CPM</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="font-mono text-primary" style={{ fontSize: '2.5rem', fontWeight: 600, lineHeight: 1 }}>
+            {cpm}
+          </div>
+          <Activity size={24} style={{ color: 'var(--color-moss)' }} />
         </div>
       </div>
 
-      {/* STREAK / COMBO */}
-      <div className="forest-card" style={{ padding: '0.85rem', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.2rem' }}>
-          <Flame size={14} style={{ color: streak >= 20 ? 'var(--color-warm-highlight)' : 'var(--text-muted)' }} />
-          <span>STREAK</span>
-        </div>
-        <div className="font-mono" style={{ fontSize: '1.8rem', fontWeight: 700, lineHeight: 1.1, color: streak >= 20 ? 'var(--color-warm-highlight)' : 'var(--text-primary)' }}>
-          {streak}
+      {/* TIME */}
+      <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>TIME</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="font-mono text-primary" style={{ fontSize: '2.5rem', fontWeight: 600, lineHeight: 1 }}>
+            {time}s
+          </div>
+          <Clock size={24} style={{ color: 'var(--color-moss)' }} />
         </div>
       </div>
-
-      {/* ERRORS (if applicable) */}
-      {maxErrors !== null && (
-        <div className="forest-card" style={{ padding: '0.85rem', textAlign: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.2rem' }}>
-            <ShieldAlert size={14} style={{ color: 'var(--color-error)' }} />
-            <span>ERRORS</span>
-          </div>
-          <div className="font-mono" style={{ fontSize: '1.8rem', fontWeight: 700, lineHeight: 1.1, color: errors > 0 ? 'var(--color-error)' : 'var(--color-success)' }}>
-            {errors}{maxErrors !== Infinity ? `/${maxErrors}` : ''}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
