@@ -3,7 +3,6 @@ import { Trophy, ArrowRight, Activity, Zap, Play } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { apiService } from '../services/api.js';
 import { socketService } from '../services/socket.js';
-import { Link, useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
   const { currentUser, profile } = useAuth();

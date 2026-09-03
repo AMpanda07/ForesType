@@ -57,6 +57,20 @@ class SocketService {
       this.socket.emit('session:finish', data);
     }
   }
+
+  on(event, callback) {
+    if (!this.socket) {
+      this.connect();
+    }
+    this.socket.on(event, callback);
+    return () => this.socket.off(event, callback);
+  }
+
+  off(event, callback) {
+    if (this.socket) {
+      this.socket.off(event, callback);
+    }
+  }
 }
 
 export const socketService = new SocketService();
