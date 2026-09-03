@@ -1,74 +1,71 @@
 /* FOREST TYPE DESIGN SYSTEM & ATMOSPHERIC STYLES */
 :root, :root[data-theme="light"] {
-  /* Light Mode Tokens (Default) */
-  --bg-primary: #F9F7F1;
-  --bg-deep: #F1EFE7;
-  --bg-surface: #FFFFFF;
-  --bg-surface-hover: #F2F0E9;
-  --bg-secondary: #EBE7DC;
-  --bg-secondary-hover: #E2DDD0;
+  /* Light Mode Tokens (Phase 2) */
+  --bg-primary: #f0f5ef;
+  --bg-deep: #e8eee6;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f5f8f5;
+  --bg-secondary: #e2ebd8;
+  --bg-secondary-hover: #d5e0ca;
   
-  --color-primary-brand: #5B0E14;
-  --color-secondary-brand: #F1E194;
-
-  --color-moss: #3A6348;
-  --color-moss-light: #4A7A5A;
-  --color-accent-primary: #5B0E14; /* Burgundy */
-  --color-accent-luminous: #3A6348; /* Moss for light mode */
-  --color-warm-highlight: #C28D75;
+  --color-moss: #16a34a;
+  --color-moss-light: #22c55e;
+  --color-accent-primary: #15803d;
+  --color-accent-luminous: #16a34a;
+  --color-warm-highlight: #65a30d;
   
-  --text-primary: #1C3326;
-  --text-secondary: #3D5C4A;
-  --text-muted: #4D6D5A;
+  --text-primary: #1a2e22;
+  --text-secondary: #5c6b62;
+  --text-muted: #85968b;
   
-  --color-error: #B03A3A;
-  --color-error-bg: rgba(176, 58, 58, 0.1);
-  --color-success: #3A6348;
-  --color-success-bg: rgba(58, 99, 72, 0.1);
+  --color-error: #dc2626;
+  --color-error-bg: rgba(220, 38, 38, 0.1);
+  --color-success: #16a34a;
+  --color-success-bg: rgba(22, 163, 74, 0.1);
   
-  --border-subtle: rgba(58, 99, 72, 0.15);
-  --border-moss: rgba(58, 99, 72, 0.3);
-  --border-luminous: rgba(91, 14, 20, 0.2);
+  --border-subtle: rgba(26, 46, 34, 0.1);
+  --border-moss: rgba(22, 163, 74, 0.2);
+  --border-luminous: rgba(21, 128, 61, 0.3);
 
   /* Glow Effects (Restrained) */
-  --glow-soft: 0 4px 15px rgba(58, 99, 72, 0.08);
-  --glow-moss: 0 4px 20px rgba(58, 99, 72, 0.15);
-  --glow-warm: 0 4px 15px rgba(241, 225, 148, 0.3);
-  --glow-error: 0 4px 12px rgba(176, 58, 58, 0.2);
+  --glow-soft: 0 4px 15px rgba(22, 163, 74, 0.08);
+  --glow-moss: 0 4px 20px rgba(22, 163, 74, 0.15);
+  --glow-warm: 0 4px 15px rgba(101, 163, 13, 0.2);
+  --glow-error: 0 4px 12px rgba(220, 38, 38, 0.2);
 }
 
 :root[data-theme="dark"] {
-  /* Dark Mode Tokens (Original) */
-  --bg-primary: #07120E;
-  --bg-deep: #030807;
-  --bg-surface: #0D2119;
-  --bg-surface-hover: #122a20;
-  --bg-secondary: #123024;
-  --bg-secondary-hover: #183e2f;
+  /* Dark Mode Tokens (Phase 2) */
+  --bg-primary: #0d1a14;
+  --bg-deep: #08120e;
+  --bg-surface: #111f18;
+  --bg-surface-hover: #16281e;
+  --bg-secondary: #1a2e22;
+  --bg-secondary-hover: #223c2d;
   
-  --color-moss: #315F43;
-  --color-moss-light: #447a57;
-  --color-accent-primary: #72A96B;
-  --color-accent-luminous: #A8D8A0;
-  --color-warm-highlight: #D8D1A0;
+  --color-moss: #22c55e;
+  --color-moss-light: #4ade80;
+  --color-accent-primary: #4ade80;
+  --color-accent-luminous: #22c55e;
+  --color-warm-highlight: #a3e635;
   
-  --text-primary: #E6EFE4;
-  --text-secondary: #9CAF9E;
-  --text-muted: #617366;
+  --text-primary: #e8f0ea;
+  --text-secondary: #8a9a90;
+  --text-muted: #64746a;
   
-  --color-error: #C85C5C;
-  --color-error-bg: rgba(200, 92, 92, 0.15);
-  --color-success: #8FCF83;
-  --color-success-bg: rgba(143, 207, 131, 0.15);
+  --color-error: #ef4444;
+  --color-error-bg: rgba(239, 68, 68, 0.15);
+  --color-success: #22c55e;
+  --color-success-bg: rgba(34, 197, 94, 0.15);
   
-  --border-subtle: rgba(114, 169, 107, 0.15);
-  --border-moss: rgba(49, 95, 67, 0.4);
-  --border-luminous: rgba(168, 216, 160, 0.4);
+  --border-subtle: rgba(232, 240, 234, 0.1);
+  --border-moss: rgba(34, 197, 94, 0.2);
+  --border-luminous: rgba(74, 222, 128, 0.3);
 
-  --glow-soft: 0 0 15px rgba(168, 216, 160, 0.15);
-  --glow-moss: 0 0 20px rgba(114, 169, 107, 0.2);
-  --glow-warm: 0 0 15px rgba(216, 209, 160, 0.2);
-  --glow-error: 0 0 12px rgba(200, 92, 92, 0.3);
+  --glow-soft: 0 0 15px rgba(34, 197, 94, 0.15);
+  --glow-moss: 0 0 20px rgba(74, 222, 128, 0.2);
+  --glow-warm: 0 0 15px rgba(163, 230, 53, 0.2);
+  --glow-error: 0 0 12px rgba(239, 68, 68, 0.3);
 }
 
 :root {

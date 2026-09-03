@@ -38,3 +38,38 @@ export const getLeaderboard = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getCurrentUserRank = async (req, res, next) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    // Count how many users have strictly more lifetimeExperience than the current user
+    const higherRankCount = await User.countDocuments({
+      lifetimeExperience: { $gt: user.lifetimeExperience }
+    });
+
+    // In a tie (same lifetimeExperience), we'd technically need to handle `createdAt` tiebreaker,
+    // but a simple count works for most cases. To be exact:
+    const tieBreakCount = await User.countDocuments({
+      lifetimeExperience: user.lifetimeExperience,
+      createdAt: { $lt: user.createdAt }
+    });
+
+    const rank = higherRankCount + tieBreakCount + 1;
+
+    res.status(200).json({
+      success: true,
+      data: {
+        rank,
+        level: user.level,
+        experience: user.experience,
+        lifetimeExperience: user.lifetimeExperience
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};

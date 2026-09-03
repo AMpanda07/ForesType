@@ -1,43 +1,31 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Menu, X, Trees, Trophy, BarChart3, HelpCircle, Gamepad2, Keyboard, Settings, LogIn, LogOut } from 'lucide-react';
-import { useAudio } from '../../hooks/useAudio.js';
+import { Menu, X, Trees, Sun, Moon, Monitor } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-import { isFeatureEnabled } from '../../config/features.js';
-import { UnderDevelopmentModal } from './UnderDevelopmentModal.jsx';
 
-export const Navbar = ({ activeTab, setActiveTab, profileName }) => {
-  const { soundEnabled, toggleSound } = useAudio();
+export const Navbar = ({ activeTab, setActiveTab }) => {
   const { currentUser, profile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleLoginClick = () => {
-    setActiveTab('auth');
-  };
-
-  const handleProfileClick = () => {
-    setActiveTab('profile');
-  };
+  const handleLoginClick = () => setActiveTab('auth');
+  const handleProfileClick = () => setActiveTab('profile');
 
   const navItems = [
-    { id: 'practice', label: 'Practice', icon: Keyboard },
-    { id: 'games', label: 'Games', icon: Gamepad2 },
-    { id: 'quotes', label: 'Quotes', icon: Keyboard },
-    { id: 'records', label: 'Records', icon: Trophy },
-    { id: 'stats', label: 'Stats', icon: BarChart3 },
-    { id: 'about', label: 'About', icon: HelpCircle }
+    { id: 'practice', label: 'Practice' },
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'stats', label: 'Stats' },
+    { id: 'settings', label: 'Settings' }
   ];
 
-  const [devModalOpen, setDevModalOpen] = useState(false);
-
   const handleNavClick = (id) => {
-    // Check feature status
-    if (!isFeatureEnabled(id)) {
-      setDevModalOpen(true);
-      return;
-    }
-
     setActiveTab(id);
     setMobileMenuOpen(false);
+  };
+
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  
+  const toggleTheme = () => {
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
   };
 
   return (
@@ -68,150 +56,126 @@ export const Navbar = ({ activeTab, setActiveTab, profileName }) => {
           }}
         >
           <div style={{
-            width: '38px',
-            height: '38px',
+            width: '32px',
+            height: '32px',
             borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-surface)',
-            border: '1px solid var(--color-moss)',
+            color: 'var(--color-moss-light)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-accent-luminous)',
-            boxShadow: 'var(--glow-moss)'
+            justifyContent: 'center'
           }}>
-            <Trees size={22} />
+            <Trees size={24} />
           </div>
           <span className="heading-display" style={{
-            fontSize: '1.25rem',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            color: 'var(--text-primary)'
+            fontSize: '1.2rem',
+            fontWeight: 600,
+            color: 'var(--text-primary)',
+            textTransform: 'none'
           }}>
-            FOREST <span style={{ color: 'var(--color-accent-luminous)' }}>TYPE</span>
+            ForesType
           </span>
         </button>
 
-        {/* Desktop Nav */}
-        <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        {/* Center Nav */}
+        <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
           {navItems.map((item) => {
-            const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.5rem 0.85rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: isActive ? '1px solid var(--color-accent-primary)' : '1px solid transparent',
-                  backgroundColor: isActive ? 'var(--bg-secondary)' : 'transparent',
-                  color: isActive ? 'var(--color-accent-luminous)' : 'var(--text-secondary)',
-                  fontWeight: 500,
-                  fontSize: '0.9rem',
+                  background: 'none',
+                  border: 'none',
+                  color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  fontWeight: isActive ? 600 : 500,
+                  fontSize: '0.95rem',
                   cursor: 'pointer',
-                  transition: 'all var(--transition-fast)'
+                  padding: '0.5rem 0.25rem',
+                  position: 'relative',
+                  transition: 'color var(--transition-fast)'
                 }}
               >
-                <Icon size={16} />
-                <span>{item.label}</span>
+                {item.label}
+                {isActive && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '-4px',
+                    left: 0,
+                    right: 0,
+                    height: '2px',
+                    backgroundColor: 'var(--color-accent-luminous)',
+                    borderRadius: '2px'
+                  }} />
+                )}
               </button>
             );
           })}
         </nav>
 
-        {/* Right Actions: Sound Toggle & Profile */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        {/* Right Actions: Theme Controls & Profile */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button
-            onClick={toggleSound}
-            title={soundEnabled ? 'Mute Sound' : 'Enable Sound'}
+            onClick={toggleTheme}
             style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--text-secondary)',
+              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              width: '38px',
-              height: '38px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-moss)',
-              backgroundColor: soundEnabled ? 'var(--bg-secondary)' : 'transparent',
-              color: soundEnabled ? 'var(--color-accent-luminous)' : 'var(--text-muted)',
-              cursor: 'pointer',
-              transition: 'all var(--transition-fast)'
+              justifyContent: 'center'
             }}
           >
-            {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
+            {currentTheme === 'light' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
           {currentUser ? (
-            <div
+            <button
               className="desktop-profile"
+              onClick={handleProfileClick}
               style={{
-                padding: '0.4rem 0.75rem',
-                borderRadius: 'var(--radius-full)',
-                backgroundColor: activeTab === 'profile' ? 'var(--bg-secondary)' : 'var(--bg-surface)',
-                border: activeTab === 'profile' ? '1px solid var(--color-accent-primary)' : '1px solid var(--border-subtle)',
-                fontSize: '0.85rem',
-                color: 'var(--text-secondary)',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                border: activeTab === 'profile' ? '2px solid var(--color-accent-primary)' : '2px solid transparent',
+                padding: 0,
+                cursor: 'pointer',
+                overflow: 'hidden',
+                backgroundColor: 'var(--bg-secondary)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.4rem',
-                cursor: 'pointer'
+                justifyContent: 'center'
               }}
-              onClick={handleProfileClick}
-              title="View Profile"
+              title={profile?.displayName || 'Profile'}
             >
-              {profile?.selectedAvatar ? (
-                <img src={profile.selectedAvatar} alt="avatar" style={{width: 20, height: 20, borderRadius: '50%'}} />
+              {profile?.googlePhotoURL ? (
+                <img src={profile.googlePhotoURL} alt="avatar" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
               ) : (
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-success)' }} />
+                <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--color-moss)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 'bold' }}>
+                  {(profile?.displayName || 'U')[0].toUpperCase()}
+                </div>
               )}
-              <span style={{ color: activeTab === 'profile' ? 'var(--color-accent-luminous)' : 'inherit' }}>
-                {profile?.displayName || currentUser.displayName || 'Wanderer'}
-              </span>
-            </div>
+            </button>
           ) : (
             <button
               onClick={handleLoginClick}
               style={{
-                padding: '0.4rem 0.75rem',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--color-accent-primary)',
-                color: 'var(--bg-primary)',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--bg-secondary)',
                 border: 'none',
-                fontWeight: 'bold',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.4rem',
-                fontSize: '0.85rem'
+                justifyContent: 'center',
+                color: 'var(--text-secondary)'
               }}
             >
-              <LogIn size={16} />
-              Login
+              <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid currentColor' }}></div>
             </button>
           )}
-          
-          <button
-            onClick={() => setActiveTab('settings')}
-            title="Settings"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '38px',
-              height: '38px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-moss)',
-              backgroundColor: activeTab === 'settings' ? 'var(--bg-secondary)' : 'transparent',
-              color: activeTab === 'settings' ? 'var(--color-accent-luminous)' : 'var(--text-muted)',
-              cursor: 'pointer',
-              transition: 'all var(--transition-fast)'
-            }}
-          >
-            <Settings size={18} />
-          </button>
 
           {/* Mobile Menu Trigger */}
           <button
@@ -219,13 +183,8 @@ export const Navbar = ({ activeTab, setActiveTab, profileName }) => {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             style={{
               display: 'none',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '38px',
-              height: '38px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-moss)',
-              backgroundColor: 'transparent',
+              background: 'none',
+              border: 'none',
               color: 'var(--text-primary)',
               cursor: 'pointer'
             }}
@@ -245,32 +204,23 @@ export const Navbar = ({ activeTab, setActiveTab, profileName }) => {
           flexDirection: 'column',
           gap: '0.5rem'
         }}>
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  padding: '0.75rem 1rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid ' + (isActive ? 'var(--color-accent-primary)' : 'var(--border-subtle)'),
-                  backgroundColor: isActive ? 'var(--bg-secondary)' : 'transparent',
-                  color: isActive ? 'var(--color-accent-luminous)' : 'var(--text-primary)',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  textAlign: 'left'
-                }}
-              >
-                <Icon size={18} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: activeTab === item.id ? 'var(--color-accent-luminous)' : 'var(--text-primary)',
+                fontWeight: activeTab === item.id ? 600 : 500,
+                cursor: 'pointer',
+                textAlign: 'left',
+                padding: '0.75rem 1rem'
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
       )}
 
@@ -284,11 +234,6 @@ export const Navbar = ({ activeTab, setActiveTab, profileName }) => {
           }
         }
       `}</style>
-      
-      <UnderDevelopmentModal 
-        isOpen={devModalOpen} 
-        onClose={() => setDevModalOpen(false)} 
-      />
     </header>
   );
 };

@@ -15,30 +15,14 @@ const getAuthHeaders = async () => {
 };
 
 export const apiService = {
-  verifyAuth: async (token) => {
+  syncFirebaseUser: async (firebaseToken) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/verify`, {
+      const response = await fetch(`${API_BASE_URL}/auth/sync`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${firebaseToken}`
         }
-      });
-      return await response.json();
-    } catch (error) {
-      console.error("verifyAuth error", error);
-      return { success: false, error };
-    }
-  },
-
-  login: async (email, password) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
       });
       return await response.json();
     } catch (error) {
@@ -46,14 +30,14 @@ export const apiService = {
     }
   },
 
-  register: async (email, password, displayName) => {
+  getProfile: async (token) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: 'POST',
+      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password, displayName })
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
       });
       return await response.json();
     } catch (error) {

@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { apiService } from '../services/api.js';
+import { auth, googleProvider } from '../config/firebase.js';
+import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 
 const AuthContext = createContext();
 
@@ -11,43 +13,60 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
-      const token = localStorage.getItem('jwtToken');
-      if (token) {
-        const res = await apiService.verifyAuth(token);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const token = await user.getIdToken(true);
+        localStorage.setItem('jwtToken', token);
+        
+        // Sync with backend
+        const res = await apiService.syncFirebaseUser(token);
         if (res.success) {
           setProfile(res.user);
-          setCurrentUser({ displayName: res.user.displayName, email: res.user.email });
+          setCurrentUser(user);
         } else {
+          // If backend sync fails, log out
+          await signOut(auth);
           localStorage.removeItem('jwtToken');
+          setProfile(null);
+          setCurrentUser(null);
         }
+      } else {
+        localStorage.removeItem('jwtToken');
+        setProfile(null);
+        setCurrentUser(null);
       }
       setLoading(false);
-    };
-    initAuth();
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const login = async (email, password) => {
-    const res = await apiService.login(email, password);
-    if (res.success) {
-      localStorage.setItem('jwtToken', res.token);
-      setProfile(res.user);
-      setCurrentUser({ displayName: res.user.displayName, email: res.user.email });
+  const loginWithGoogle = async () => {
+    try {
+      setLoading(true);
+      const result = await signInWithPopup(auth, googleProvider);
+      const token = await result.user.getIdToken(true);
+      localStorage.setItem('jwtToken', token);
+      
+      const res = await apiService.syncFirebaseUser(token);
+      if (res.success) {
+        setProfile(res.user);
+        setCurrentUser(result.user);
+        return { success: true };
+      } else {
+        await signOut(auth);
+        return { success: false, message: 'Backend sync failed' };
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      return { success: false, message: error.message };
+    } finally {
+      setLoading(false);
     }
-    return res;
   };
 
-  const register = async (email, password, displayName) => {
-    const res = await apiService.register(email, password, displayName);
-    if (res.success) {
-      localStorage.setItem('jwtToken', res.token);
-      setProfile(res.user);
-      setCurrentUser({ displayName: res.user.displayName, email: res.user.email });
-    }
-    return res;
-  };
-
-  const logout = () => {
+  const logout = async () => {
+    await signOut(auth);
     localStorage.removeItem('jwtToken');
     setProfile(null);
     setCurrentUser(null);
@@ -57,9 +76,9 @@ export const AuthProvider = ({ children }) => {
     currentUser,
     profile,
     setProfile,
-    login,
-    register,
+    loginWithGoogle,
     logout,
+    loading
   };
 
   return (

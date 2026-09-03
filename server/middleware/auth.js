@@ -1,7 +1,5 @@
-import jwt from 'jsonwebtoken';
+import admin from '../config/firebaseAdmin.js';
 import User from '../models/User.js';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_for_dev';
 
 export const requireAuth = async (req, res, next) => {
   try {
@@ -11,18 +9,22 @@ export const requireAuth = async (req, res, next) => {
     }
 
     const token = authHeader.split('Bearer ')[1];
-    const decodedToken = jwt.verify(token, JWT_SECRET);
     
-    if (!decodedToken) {
+    // Verify the Firebase ID token
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    
+    if (!decodedToken || !decodedToken.uid) {
        return res.status(401).json({ success: false, message: 'Unauthorized: Invalid token' });
     }
 
-    const user = await User.findById(decodedToken.userId);
+    // Find the corresponding MongoDB user
+    const user = await User.findOne({ firebaseUid: decodedToken.uid });
     if (!user) {
-      return res.status(401).json({ success: false, message: 'Unauthorized: User not found' });
+      return res.status(401).json({ success: false, message: 'Unauthorized: User not found in database' });
     }
     
     req.user = user;
+    req.firebaseUser = decodedToken;
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);
