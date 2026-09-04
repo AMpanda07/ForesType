@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, Filter, RefreshCw, Server, AlertCircle } from 'lucide-react';
 import { fetchRecords } from '../services/api.js';
+import { socketService } from '../services/socket.js';
 
 export const Records = () => {
   const [records, setRecords] = useState([]);
@@ -20,6 +21,16 @@ export const Records = () => {
 
   useEffect(() => {
     loadLeaderboard();
+  }, [selectedMode]);
+
+  useEffect(() => {
+    // Listen for real-time leaderboard updates
+    const unsubscribe = socketService.on('leaderboard:update', (data) => {
+      // Reload leaderboard to get fresh ranks
+      loadLeaderboard();
+    });
+
+    return () => unsubscribe();
   }, [selectedMode]);
 
   const modeFilters = [

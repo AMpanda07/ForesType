@@ -73,6 +73,18 @@ export const fetchRecords = async (mode = 'all', limit = 50) => {
   }
 };
 
+export const getMyRecords = async () => {
+  try {
+    const headers = await getAuthHeaders();
+    const response = await fetch(`${API_BASE_URL}/records/me`, {
+      headers
+    });
+    return await response.json();
+  } catch (err) {
+    return { success: false, data: [] };
+  }
+};
+
 export const submitRecord = async (recordData) => {
   try {
     const headers = await getAuthHeaders();

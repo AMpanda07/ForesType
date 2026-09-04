@@ -1,31 +1,31 @@
 /* FOREST TYPE DESIGN SYSTEM & ATMOSPHERIC STYLES */
 :root, :root[data-theme="light"] {
   /* Light Mode Tokens */
-  --bg-primary: #ffffff;
-  --bg-deep: #f8fbf9;
+  --bg-primary: #f0f5ef;
+  --bg-deep: #e8f0ea;
   --bg-surface: #ffffff;
-  --bg-surface-hover: #f1f6f3;
-  --bg-secondary: #f4f8f5;
-  --bg-secondary-hover: #e8f0eb;
+  --bg-surface-hover: #f9fbf9;
+  --bg-secondary: #eef2ef;
+  --bg-secondary-hover: #e0e8e3;
   
-  --color-moss: #4caf50;
-  --color-moss-light: #81c784;
-  --color-accent-primary: #388e3c;
-  --color-accent-luminous: #4caf50;
-  --color-warm-highlight: #689f38;
+  --color-moss: #16a34a;
+  --color-moss-light: #4ade80;
+  --color-accent-primary: #15803d;
+  --color-accent-luminous: #16a34a;
+  --color-warm-highlight: #15803d;
   
-  --text-primary: #1e2924;
-  --text-secondary: #5a6b63;
+  --text-primary: #1a2e22;
+  --text-secondary: #5c6b62;
   --text-muted: #8ca396;
   
   --color-error: #e53935;
   --color-error-bg: rgba(229, 57, 53, 0.08);
-  --color-success: #4caf50;
-  --color-success-bg: rgba(76, 175, 80, 0.08);
+  --color-success: #16a34a;
+  --color-success-bg: rgba(22, 163, 74, 0.08);
   
-  --border-subtle: #eef2ef;
-  --border-moss: #e0e8e3;
-  --border-luminous: rgba(76, 175, 80, 0.3);
+  --border-subtle: #e0e8e3;
+  --border-moss: #16a34a;
+  --border-luminous: rgba(22, 163, 74, 0.3);
 
   /* Glow Effects */
   --glow-soft: 0 4px 15px rgba(0, 0, 0, 0.03);
@@ -41,31 +41,31 @@
 
 :root[data-theme="dark"] {
   /* Dark Mode Tokens */
-  --bg-primary: #0a0f0d;
-  --bg-deep: #050806;
-  --bg-surface: #101713;
-  --bg-surface-hover: #151e19;
-  --bg-secondary: #16201a;
-  --bg-secondary-hover: #1b261f;
+  --bg-primary: #0d1a14;
+  --bg-deep: #0a1410;
+  --bg-surface: #111f18;
+  --bg-surface-hover: #162a20;
+  --bg-secondary: #162a20;
+  --bg-secondary-hover: #1b3528;
   
-  --color-moss: #66bb6a;
-  --color-moss-light: #81c784;
-  --color-accent-primary: #81c784;
-  --color-accent-luminous: #66bb6a;
-  --color-warm-highlight: #9ccc65;
+  --color-moss: #4ade80;
+  --color-moss-light: #86efac;
+  --color-accent-primary: #22c55e;
+  --color-accent-luminous: #4ade80;
+  --color-warm-highlight: #4ade80;
   
-  --text-primary: #e6eee9;
-  --text-secondary: #8c9e94;
+  --text-primary: #e8f0ea;
+  --text-secondary: #8a9a90;
   --text-muted: #5e6d65;
   
   --color-error: #ef5350;
   --color-error-bg: rgba(239, 83, 80, 0.12);
-  --color-success: #66bb6a;
-  --color-success-bg: rgba(102, 187, 106, 0.12);
+  --color-success: #4ade80;
+  --color-success-bg: rgba(74, 222, 128, 0.12);
   
   --border-subtle: #1c2721;
-  --border-moss: #23332a;
-  --border-luminous: rgba(102, 187, 106, 0.2);
+  --border-moss: #22c55e;
+  --border-luminous: rgba(74, 222, 128, 0.2);
 
   --glow-soft: 0 0 15px rgba(0, 0, 0, 0.3);
   --glow-moss: 0 0 20px rgba(102, 187, 106, 0.15);
@@ -308,4 +308,136 @@ html, body {
   .forest-card {
     padding: 1rem;
   }
+}
+
+/* Uiverse Auth Form Styles */
+.uiverse-form {
+  --background: var(--bg-surface);
+  --input-focus: var(--color-moss);
+  --font-color: var(--text-primary);
+  --font-color-sub: var(--text-secondary);
+  --bg-color: var(--bg-primary);
+  --main-color: var(--border-moss);
+  padding: 30px;
+  background: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  margin: 4rem auto;
+  max-width: 400px;
+}
+
+.uiverse-form > p {
+  font-family: var(--font-heading);
+  color: var(--font-color);
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.uiverse-form > p > span {
+  font-family: var(--font-mono);
+  color: var(--font-color-sub);
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.uiverse-separator {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 10px 0;
+}
+
+.uiverse-separator > div {
+  flex: 1;
+  height: 2px;
+  border-radius: 5px;
+  background-color: var(--border-subtle);
+}
+
+.uiverse-separator > span {
+  color: var(--font-color-sub);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.uiverse-oauthButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  width: 100%;
+  height: 45px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  transition: all 250ms;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.uiverse-oauthButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background-color: var(--color-moss);
+  z-index: -1;
+  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  transition: all 250ms;
+}
+
+.uiverse-oauthButton:hover {
+  color: #ffffff;
+}
+
+.uiverse-oauthButton:hover::before {
+  width: 100%;
+}
+
+.uiverse-form > input {
+  width: 100%;
+  height: 45px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--font-color);
+  padding: 5px 15px;
+  outline: none;
+  font-family: var(--font-ui);
+}
+
+.uiverse-form > input:focus {
+  border-color: var(--color-moss);
+}
+
+.uiverse-icon {
+  width: 1.5rem;
+  height: 1.5rem;
 }

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { apiService } from '../services/api.js';
 import { auth, googleProvider } from '../config/firebase.js';
-import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 const AuthContext = createContext();
 
@@ -65,6 +65,54 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerWithEmail = async (email, password) => {
+    try {
+      setLoading(true);
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      const token = await result.user.getIdToken(true);
+      localStorage.setItem('jwtToken', token);
+      
+      const res = await apiService.syncFirebaseUser(token);
+      if (res.success) {
+        setProfile(res.user);
+        setCurrentUser(result.user);
+        return { success: true };
+      } else {
+        await signOut(auth);
+        return { success: false, message: 'Backend sync failed' };
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      return { success: false, message: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loginWithEmail = async (email, password) => {
+    try {
+      setLoading(true);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const token = await result.user.getIdToken(true);
+      localStorage.setItem('jwtToken', token);
+      
+      const res = await apiService.syncFirebaseUser(token);
+      if (res.success) {
+        setProfile(res.user);
+        setCurrentUser(result.user);
+        return { success: true };
+      } else {
+        await signOut(auth);
+        return { success: false, message: 'Backend sync failed' };
+      }
+    } catch (error) {
+      console.error('Email login error:', error);
+      return { success: false, message: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = async () => {
     await signOut(auth);
     localStorage.removeItem('jwtToken');
@@ -77,6 +125,8 @@ export const AuthProvider = ({ children }) => {
     profile,
     setProfile,
     loginWithGoogle,
+    registerWithEmail,
+    loginWithEmail,
     logout,
     loading
   };

@@ -8,6 +8,11 @@ export const Settings = ({ settings = {}, onUpdateSettings }) => {
     onUpdateSettings({ theme });
   };
 
+  const handleAccentChange = (color) => {
+    onUpdateSettings({ accentColor: color });
+    // In a real app, this would update CSS variables on the :root element
+  };
+
   const tabs = [
     { id: 'general', label: 'General', icon: SettingsIcon },
     { id: 'appearance', label: 'Appearance', icon: Palette },
@@ -92,33 +97,56 @@ export const Settings = ({ settings = {}, onUpdateSettings }) => {
                 </div>
               </div>
 
+              {/* Accent Color Section */}
               <div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Caret Style</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Change the style of the typing cursor.</p>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Accent Color</h3>
                 
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                  {['block', 'line', 'underline'].map((style) => {
-                    const isSelected = settings.caretStyle === style || (!settings.caretStyle && style === 'block');
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                  {['#8bbd8b', '#68d391', '#4fd1c5', '#63b3ed', '#7f9cf5', '#b794f4', '#f687b3', '#fbd38d'].map((color) => {
+                    const isSelected = (settings.accentColor === color) || (!settings.accentColor && color === '#8bbd8b');
                     return (
                       <button
-                        key={style}
-                        onClick={() => onUpdateSettings({ caretStyle: style })}
+                        key={color}
+                        onClick={() => handleAccentChange(color)}
                         style={{
-                          padding: '0.75rem 1.5rem',
-                          borderRadius: 'var(--radius-md)',
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          backgroundColor: color,
+                          border: isSelected ? '2px solid white' : '2px solid transparent',
+                          outline: isSelected ? `2px solid ${color}` : 'none',
                           cursor: 'pointer',
-                          border: isSelected ? '1px solid var(--color-moss)' : '1px solid var(--border-subtle)',
-                          background: isSelected ? 'var(--bg-surface)' : 'transparent',
-                          color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
-                          textTransform: 'capitalize',
-                          fontWeight: 500
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'transform var(--transition-fast)'
                         }}
                       >
-                        {style}
+                        {isSelected && (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        )}
                       </button>
                     );
                   })}
                 </div>
+              </div>
+
+              {/* Typing Preview Section */}
+              <div style={{ marginTop: '1rem' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Typing Preview</h3>
+                
+                <div className="glass-panel" style={{ padding: '1.5rem', fontFamily: 'monospace', fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
+                  <span style={{ color: 'var(--text-primary)' }}>The quick </span>brown fox jumps over the lazy dog.
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '1rem' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-moss)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Settings are saved automatically
               </div>
             </div>
           )}

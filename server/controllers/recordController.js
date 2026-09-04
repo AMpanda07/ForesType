@@ -187,3 +187,34 @@ export const getRecordsByMode = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getMyRecords = async (req, res, next) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'User not authenticated' });
+    }
+    
+    if (!getIsConnected()) {
+      return res.json({
+        success: true,
+        source: 'fallback',
+        data: []
+      });
+    }
+
+    const records = await Record.find({ firebaseUid: user.firebaseUid })
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .lean();
+      
+    res.json({
+      success: true,
+      source: 'mongodb',
+      count: records.length,
+      data: records
+    });
+  } catch (error) {
+    next(error);
+  }
+};

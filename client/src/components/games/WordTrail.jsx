@@ -16,6 +16,8 @@ export const WordTrail = ({
   const [duration, setDuration] = useState(60);
   const [difficulty, setDifficulty] = useState('intermediate');
   const [showKeyboard, setShowKeyboard] = useState(true);
+  const [isCustomTime, setIsCustomTime] = useState(false);
+  const [customInputValue, setCustomInputValue] = useState(60);
 
   const [targetText, setTargetText] = useState("Loading paragraph...");
   const [wordPoolSeed, setWordPoolSeed] = useState(0);
@@ -79,6 +81,15 @@ export const WordTrail = ({
 
   const lastTyped = engine.typedChars[engine.typedChars.length - 1];
 
+  const handleCustomTimeSubmit = (e) => {
+    e.preventDefault();
+    let val = parseInt(customInputValue, 10);
+    if (isNaN(val) || val <= 0) val = 60;
+    setDuration(val);
+    engine.restart();
+    setIsCustomTime(false);
+  };
+
   return (
     <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', padding: '2rem 0', position: 'relative', zIndex: 10 }}>
       
@@ -93,7 +104,7 @@ export const WordTrail = ({
           wpm={engine.wpm}
           accuracy={engine.accuracy}
           cpm={engine.cpm}
-          time={engine.remainingTime}
+          time={Math.ceil(engine.remainingTime)}
           timeMode="remaining"
         />
       </div>
@@ -118,16 +129,33 @@ export const WordTrail = ({
             onClick={(e) => {
               if (t !== 'Custom') {
                 setDuration(t);
+                setIsCustomTime(false);
                 engine.restart();
+              } else {
+                setIsCustomTime(true);
               }
               e.currentTarget.blur();
             }}
             disabled={engine.isStarted && t !== 'Custom'}
-            className={`time-pill ${duration === t ? 'active' : ''}`}
+            className={`time-pill ${duration === t && !isCustomTime ? 'active' : ''} ${t === 'Custom' && isCustomTime ? 'active' : ''}`}
           >
             {t}{t !== 'Custom' ? 's' : ''}
           </button>
         ))}
+
+        {isCustomTime && (
+          <form onSubmit={handleCustomTimeSubmit} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <input 
+              type="number" 
+              value={customInputValue}
+              onChange={(e) => setCustomInputValue(e.target.value)}
+              style={{ width: '60px', padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', textAlign: 'center' }}
+              min="1"
+              autoFocus
+            />
+            <button type="submit" className="time-pill" style={{ padding: '0.25rem 0.5rem' }}>OK</button>
+          </form>
+        )}
       </div>
 
       {/* Bottom Controls */}
@@ -160,7 +188,7 @@ export const WordTrail = ({
             accuracy: engine.accuracy,
             cpm: engine.cpm,
             score: engine.score,
-            duration: engine.elapsedTime,
+            duration: Math.ceil(engine.elapsedTime),
             totalChars: engine.correctCount + engine.incorrectCount,
             incorrectCount: engine.incorrectCount,
             consistency: engine.consistency
