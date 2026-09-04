@@ -100,7 +100,7 @@ export function App() {
         return <Settings settings={settings} onUpdateSettings={updateSettings} />;
 
       case 'auth':
-        return <Auth onAuthSuccess={() => setActiveTab('dashboard')} />;
+        return <Auth onAuthSuccess={() => setActiveTab('profile')} />;
 
       case 'profile':
         return <Profile />;
